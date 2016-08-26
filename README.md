@@ -4,7 +4,9 @@ Installs nginx from source using Sparrowdo
 
 # Usage
 
-    git clone 
+    $ git clone https://github.com/melezhik/sparrowdo-nginx-source-install.git
+    $ cd sparrowdo-nginx-source-install 
+    $ sparrowdo --host=127.0.0.1
 
 # Platforms supported
 
