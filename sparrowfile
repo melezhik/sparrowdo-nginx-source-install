@@ -1,0 +1,33 @@
+task_run  %(
+  task => 'install make and pcre',
+  plugin => 'package-generic',
+  parameters => %( list => ( target_os() ~~ m/centos/ ) ?? 'pcre pcre-devel' !!  'make libpcre3 libpcre3-dev' )
+);
+
+module_run 'RemoteFile', %(
+    url       => 'http://nginx.org/download/nginx-1.11.3.tar.gz',
+    location  => '/tmp/nginx/nginx-1.11.3.tar.gz'
+);
+
+
+task_run  %(
+  task => 'create directory for extraction',
+  plugin => 'directory',
+  parameters => %( 
+    path => '/var/nginx-source'
+  )
+);
+
+module_run 'Archive', %(
+    source  => '/tmp/nginx/nginx-1.11.3.tar.gz',
+    target  => '/var/nginx-source',
+);
+
+task_run %(
+  task    => "build nginx from source",
+  plugin  => "bash",
+  parameters => %(
+    command   => 'cd /var/nginx-source/nginx-1.11.3/ && ./configure --without-http_gzip_module && make'
+  )
+);
+
